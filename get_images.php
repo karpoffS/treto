@@ -7,7 +7,7 @@
  */
 
 // Путь сохранения
-$savePath = "./images/";
+$savePath = "images/";
 
 // Настройки потока
 $opts = array(
@@ -27,23 +27,23 @@ $file = new SplFileObject("test.txt");
 while (!$file->eof()) {
 	$string = $file->fgets();
 
+	// обрезаем лишнее
+	$string = trim($string);
+
 	// Парсим Урл и делаем красивый
 	$url = parse_url(urldecode($string));
-
-	// Убираем лишние символы
-	$url['path'] = str_replace(".jpg__", ".jpg", $url['path']);
 
 	// Разбираем по косточкам путь к файлу
 	foreach(explode("/", $url['path']) as $img){
 
 		// Ищем файл
 		if(preg_match("/jpg/i", $img)){
-			echo "Wrote to file: ".$img;
-			// Сохраняем файлы
-			$fp = fopen($savePath.$img, "w");
-			fwrite($fp, file_get_contents($string, false, $context));
-			fclose($fp);
 
+			// Сохраняем файлы
+			file_put_contents(
+				$savePath.$img, // куда сохранить
+				file_get_contents($string, false, $context) // Получаем файл
+			);
 		}
 	}
 }
