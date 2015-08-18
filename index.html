@@ -1,29 +1,66 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-	<meta charset="UTF-8">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Выкрузка картинок+водяной знак</title>
-	<!-- Mobile Specific Metas -->
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-
-	<!--[if lt IE 9]>
-	<script src="http://css3-mediaqueries-js.googlecode.com/files/css3-mediaqueries.js"></script>
-	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-
-	<!-- последняя версия bootstrap -->
+	<!-- Bootstrap -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
-	<!-- Тема bootstrap-а -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<script src="http://css3-mediaqueries-js.googlecode.com/files/css3-mediaqueries.js"></script>
+	<![endif]-->
+
+	<link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
-
-<!-- последняя версия bootstrap minified JavaScript -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="block" style="background-color: black; color: white;">
+					<ul>
+						<li>Сделать сохранение данных в БД</li>
+						<li>Сделать Обёртку загрузки во время старта страницы(AJAX)</li>
+					</ul>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="block">
+				<form action="upload.php" method="post" enctype="multipart/form-data" id="uploadform" class="form-inline row" onsubmit="return uploadfile();">
+					<div class="form-group col-md-6" id="choice">
+						<label for="fileToUpload">Выберите файл</label>
+						<input type="file" name="fileToUpload" id="fileToUpload">
+					</div>
+					<div class="form-group col-md-6" id="loadbtn">
+						<input type="submit" id="upload" value="Загрузить" name="upload" class="btn btn-success">
+					</div>
+					<div class="form-group col-md-12">
+						<p class="text-muted" id="message">Загрузите файл содержащий ссылки</p>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div id="container"></div>
+		</div>
+	</div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		loadList()
+	});
+</script>
 </body>
 </html>
