@@ -69,13 +69,41 @@ function uploadfile() {
 function parse_data(data){
 	var str = '';
 	for(var i in data){
+		data[i].id = "wrpimg"+i;
 		img_total_data.push(data[i]);
-
-		str += "<div><img src=\"/images/"+data[i].name+"\" style=\"width: "+data[i].width+"px; height: "+data[i].height+"px;\" /></div>";
-		//str += "<div id=\"wrapper"+i+"\"><img id=\"img"+i+"\" src=\"/images/"+data[i].name+"\" style=\"width: "+data[i].width+"px; height: "+data[i].height+"px;\" /></div>";
+		str += "<div id=\"wrpimg"+i+"\"><img src=\"/images/"+data[i].name+"\" "+data[i].attr+" /></div>";
 	}
 	$( "#container" ).append(str);
 	grid_maker();
+}
+
+/**
+ * Функция раскитывает строки и возвращает результат в виде масива
+ * @returns {Array}
+ */
+function calc_rows(){
+	var $container 	= $('#container'),
+		$wrps = $container.find('div'),
+		container_width = $container.width(),
+		total_row_witdh = 0,
+		col_rows = 0,
+		margin = 5,
+		array = [];
+
+	// Считаем общюю длину с отступами(l+r)
+	$.each(img_total_data, function(i, v){
+		total_row_witdh += v.width + (margin*2);
+	});
+
+	// Считаем кол-во строк
+	col_rows = Math.ceil(total_row_witdh / container_width);
+
+	console.log(
+		"container_width: "+container_width,
+		"total_row_witdh: "+total_row_witdh,
+		"col_rows: "+col_rows
+	);
+	//return array;
 }
 
 /**
@@ -83,30 +111,55 @@ function parse_data(data){
  */
 function grid_maker(){
 	var $container 	= $('#container'),
-		$imgs = $container.find('img'),
-		img_total_width = 0,
-		container_width = $container.innerWidth(),
+		$wrps = $container.find('div'),
+		//img_total_width = 0,
+		//container_width = $container.innerWidth(),
+		container_width = $container.width(),
+		percent_container = 75,
 		total_this_row = 0,
 		margin = 5;
 
+		console.log("container_width: "+container_width);
+
 	// Делаем расчёты по картинкам
-	$imgs.each(function(i) {
-		total_this_row += $(this).width() + (margin*2);
-		//$(this).css({marginLeft: "-"+margin+"px"});
-		$(this).parent().css({ margin: margin+"px"});
-		$(this).parent().css({
-			width: $(this).width()+"px",
-			height: $(this).height()+"px"
-		});
+	$wrps.each(function() {
+
+		var $img = $(this).children();
+		var width = $img.width();
+		var freeSpace = 0;
+
+		// Общяя ширина картинок
+		total_this_row += width + (margin*2);
+
+		//$(this).css({ margin: margin+"px"});
+
 		// Расчитываем строки
 		if(total_this_row > container_width){
+
+			// Находим пустое место в конце строки
+			freeSpace = Math.abs((container_width - total_this_row));
+
+			if(!freeSpace < 16)
+			width -= freeSpace;
+			console.log("id: "+$(this).attr('id'),"freeSpace: "+freeSpace, "width: "+width);
 			total_this_row = 0;
+
 		}
+
+		// Задаём размеры контейнеру картинки
+		$(this).css({
+			width: width+"px",
+			height: $img.height()+"px"
+		});
 	});
 
 	// debug
-	console.log(container_width, img_total_width);
-	console.log("img_total_data: "+img_total_data.length);
+	//console.log(container_width, img_total_width);
+	//console.log("img_total_data: "+img_total_data.length);
 }
+
+$(window).resize(function () {
+	grid_maker();
+});
 
 
