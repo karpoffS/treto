@@ -18,48 +18,69 @@
 	<script src="http://css3-mediaqueries-js.googlecode.com/files/css3-mediaqueries.js"></script>
 	<![endif]-->
 
+	<!-- Скрипт для обработки сообщений -->
+	<script src="js/jquery.messages.js" type="text/javascript"></script>
+
+	<!-- Скрипт Галлереи -->
+	<script src="js/jquery.GalleryAsGoogle.js" type="text/javascript"></script>
+
+	<!-- Основные стили приложения -->
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-12">
-			<div class="block" style="background-color: black; color: white;">
-					<ul>
-						<li>Сделать сохранение данных в БД</li>
-					</ul>
-			</div>
-		</div>
-		<div class="col-md-12">
-			<div class="block">
-				<form action="upload.php" method="post" enctype="multipart/form-data" id="uploadform" class="form-inline row" onsubmit="return uploadfile();">
-					<div class="form-group col-md-6" id="choice">
-						<label for="fileToUpload">Выберите файл</label>
-						<input type="file" name="fileToUpload" id="fileToUpload">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12" style="text-align: center;">
+				<form class="form-inline" action="backend.php" method="post" enctype="multipart/form-data" id="uploadform" onsubmit="return Main.SubmitForm();">
+					<div class="form-group" id="fileToUpload">
+						<input type="file" class="form-control" name="fileToUpload">
 					</div>
-					<div class="form-group col-md-6" id="loadbtn">
-						<input type="submit" id="upload" value="Загрузить" name="upload" class="btn btn-success">
-					</div>
-					<div class="form-group col-md-12">
-						<p class="text-muted" id="message">Загрузите файл содержащий ссылки</p>
-					</div>
+					<button type="submit" id="upload" value="Загрузить" name="upload" class="btn btn-success">Загрузить</button>
 				</form>
 			</div>
 		</div>
-		<div class="col-md-12">
-			<div id="container"></div>
+		<div class="row">
+			<div class="col-md-12" style="text-align: center;">
+				<p class="text-muted" id="message">Загрузите файл содержащий ссылки</p>
+			</div>
 		</div>
 	</div>
-</div>
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script src="js/main.js" type="text/javascript"></script>
-<script type="text/javascript">
-	$(document).ready(function(){
-		loadList()
-	});
-</script>
+
+	<!-- gallery container -->
+	<div id="gallery"></div>
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+	<!-- Core application -->
+	<script src="js/Main.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+			// Инициализируем модуль сообщений
+			Messages.init({
+				container: "#message",
+				delay: 2000,
+				fadeOut: 1000,
+				defaultString: "Загрузите файл содержащий ссылки",
+				callBackArgs: true,
+				callback: function(array){
+					Main.appendToArray(array);
+					return true;
+				}
+			});
+
+			// Загружаем список по ajax
+			Main.loadList();
+
+			// Устанвливаем обработчик на изменение размеров
+			$(window).resize(function(){
+				Gallery.resize();
+			});
+		});
+	</script>
 </body>
 </html>

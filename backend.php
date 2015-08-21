@@ -1,9 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: sergey
- * Date: 14.08.15
- * Time: 16:17
+ * User: Karpov Sergey
  */
 
 require_once("inc/common.php");
@@ -27,26 +25,32 @@ try {
 
 					$build = Main::buildImages($data);
 
-					//usleep((2*1000*1000)); // 5 sec
-
-					// Сохраняем результат в базу данных
-					//$result = Main::saveToDB($build);
-
 					// Отправляем ответ
 					Main::jsonMessage([
 						'status' => true,
-						'data' => $build
+						'data' => count($build) > 0 ? $build : Main::loadList()
 					]);
 
 				} else {
-					throw new Exception("Файл имеет 0 байт длину!");
+					throw new Exception("Файл имеет длину 0 байт!");
 				}
 			} else {
 				throw new Exception("Вы ничего не загрузили!");
 			}
 		}
 	} else {
-		throw new Exception("Не верный формат запроса!");
+
+		$result = Main::loadList();
+		if(count($result) > 0){
+			// Отправляем ответ
+			Main::JsonMessage([
+				'status' => true,
+				'data' => Main::loadList()
+			]);
+		}
+
+		throw new Exception("Галерея пуста, пожайлуста загрузите файл загрузок!");
+
 	}
 } catch (Exception $e) {
 

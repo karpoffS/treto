@@ -1,13 +1,9 @@
 <?php
-
 /**
  * Created by PhpStorm.
  * User: Karpov Sergey
- * Date: 16.08.15
- * Time: 20:07
  */
 
-use Exception;
 
 /**
  * Class WaterMark

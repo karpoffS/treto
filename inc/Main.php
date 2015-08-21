@@ -1,10 +1,7 @@
 <?php
-
 /**
  * Created by PhpStorm.
- * User: sergey
- * Date: 17.08.15
- * Time: 9:48
+ * User: Karpov Sergey
  */
 
 /**
@@ -203,7 +200,6 @@ class Main
 				'name' => basename($filename),
 				'width' => $width,
 				'height' => $height,
-				'type' => $type,
 				'attr' => $attr,
 			];
 		}

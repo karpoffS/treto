@@ -1,62 +1,40 @@
-#uploadform {
+/*body{
+	overflow-y: scroll;
+	overflow-x: hidden;
+}*/
+
+#upload, #fileToUpload {
+	margin-top: 10px;
+}
+
+/**
+ * Стили галереи
+ */
+#gallery {
 	display: block;
-	width: 50%;
-	margin: 0px auto;
-}
-
-#loadbtn > input {
-	display: block;
-	height: 34px;
-	margin-top: 18px;
-}
-
-#container > div {
-	float:left;
-	position:relative;
-	overflow:hidden;
-	margin: 5px;
-	transition: all 0.3s ease;
-	background: #f0b7a1;
-	background: -moz-linear-gradient(top,  #f0b7a1 0%, #8c3310 50%, #752201 51%, #bf6e4e 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f0b7a1), color-stop(50%,#8c3310), color-stop(51%,#752201), color-stop(100%,#bf6e4e));
-	background: -webkit-linear-gradient(top,  #f0b7a1 0%,#8c3310 50%,#752201 51%,#bf6e4e 100%);
-	background: -o-linear-gradient(top,  #f0b7a1 0%,#8c3310 50%,#752201 51%,#bf6e4e 100%);
-	background: -ms-linear-gradient(top,  #f0b7a1 0%,#8c3310 50%,#752201 51%,#bf6e4e 100%);
-	background: linear-gradient(to bottom,  #f0b7a1 0%,#8c3310 50%,#752201 51%,#bf6e4e 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0b7a1', endColorstr='#bf6e4e',GradientType=0 );
-
-}
-
-#container {
-	display: inline-block;
-	background-color: #5EFF64;
-}
-
-#container > div > img{
-	outline:none;
-}
-
-.block {
-	position: relative;
-	padding: 15px 15px 15px;
-	margin: 0 -15px 0px;
+	min-width: 100%;
+	width: 100%;
+	max-width: 100%;
+	overflow: hidden;
 	border-color: #e5e5e5 #eee #eee;
 	border-style: solid;
 	border-width: 1px 0;
 	-webkit-box-shadow: inset 0 3px 6px rgba(0,0,0,.05);
 	box-shadow: inset 0 3px 6px rgba(0,0,0,.05)
+	transition: all 0.5s ease;
 }
 
-
-@media (min-width:768px) {
-	.block {
-		margin: 0 0 15px;
-		background-color: #fff;
-		border-color: #ddd;
-		border-width: 1px;
-		border-radius: 4px 4px 0 0;
-		-webkit-box-shadow: none;
-		box-shadow: none
-	}
+#gallery > .item {
+	float:left;
+	position:relative;
+	overflow:hidden;
+	margin: 5px;
+	transition: all 0.25s ease-out;
 }
+
+#gallery > .item > img{
+	outline:none;
+	transition: margin 0.1s linear;
+}
+
 
