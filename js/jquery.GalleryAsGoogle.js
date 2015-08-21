@@ -61,6 +61,9 @@ var Gallery = (function(){
 
 		opt.margin = opt.margin || 0;
 
+
+		opt.debug = opt.debug || false;
+
 		opt.container = opt.container || "#container-gallery";
 
 		options = opt;
@@ -205,13 +208,10 @@ var Gallery = (function(){
 		 * Метод запуска
 		 * @param array
 		 */
-		run: function (array) {
+		add: function (array) {
 
 			// Сохраняем массив
 			imgSrc = array ? array : [];
-
-			elements = [];
-			nowLineWidth = 0;
 
 			// Проверяем на существоквание данных
 			if (
@@ -222,17 +222,46 @@ var Gallery = (function(){
 
 				$(options.container).html('');
 				var str = '';
+				var strLoad = 'onLoad="Gallery.start()"';
+
 				for (var i in imgSrc) {
-					str += '<div id="'+id_item+i + '" class="item" style="margin:'+options.margin+'px;">' +
-						'<img src="images/' + imgSrc[i]['name'] + '"></div>';
+
+					str += '<div id="'+id_item+i + '" class="item" ' +
+						'style="margin:'+options.margin+'px; width: ' + imgSrc[i]['width'] +
+						'px; height: ' + imgSrc[i]['height'] + 'px;">' +
+						'<img src="images/' + imgSrc[i]['name'] + '" ' +
+						'style="width: ' + imgSrc[i]['width'] + 'px; ' +
+						'height: ' + imgSrc[i]['height'] + 'px;" '+
+						((imgSrc.length-1) == i ? strLoad : '')+'></div>';
 				}
 				$(options.container).append(str);
 			}
 
-			// Запускаем расчёты
-			startGallery();
+			if(options.debug){
+				console.log("Waiting loading "+imgSrc.length+" items in gallery...");
+			}
 
 			return;
+		},
+
+		/**
+		 * Метод получения кол-ва эллементов
+		 * @returns {Number}
+		 */
+		getTotalElements: function () {
+			return imgSrc.length ;
+		},
+
+		/**
+		 * Метод обёртка для запуска галлереи
+		 */
+		start: function () {
+			startGallery();
+
+			if(options.debug) {
+				console.log("Gallery starting...");
+			}
+			return true;
 		},
 
 		/**

@@ -79,6 +79,6 @@ var Main = {
 		});
 
 		// Запускаем галлерею
-		Gallery.run(total_data_gallery);
+		Gallery.add(total_data_gallery);
 	}
 };

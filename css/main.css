@@ -28,7 +28,6 @@
 	float:left;
 	position:relative;
 	overflow:hidden;
-	margin: 5px;
 	transition: all 0.25s ease-out;
 }
 
