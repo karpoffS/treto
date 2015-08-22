@@ -4,14 +4,18 @@
  * User: Karpov Sergey
  */
 
-require_once("inc/common.php");
+// Запускаем Autoloader
+require_once("bootstrap.php");
 
 // Устанавливаем настройки путей
-Main::setSavePath(__DIR__."/images/");
-Main::setUploadPath(__DIR__."/uploads/");
+\Main::setSavePath(__DIR__."/images/");
+\Main::setUploadPath(__DIR__."/uploads/");
+\Main::setLangPath(__DIR__."/languages/");
+
+$Request = $_SERVER['REQUEST_METHOD'];
 
 try {
-	if($_SERVER['REQUEST_METHOD'] === 'POST'){
+	if($Request === 'POST'){
 
 		// Обработчик загрузки файла
 		if(isset($_POST["upload"])){
@@ -21,14 +25,15 @@ try {
 				if ($_FILES["fileToUpload"]["size"] > 0) {
 
 					/** @var array $data */
-					$data = Main::parseFile($_FILES["fileToUpload"]["tmp_name"]);
+					$data = \Main::parseFile($_FILES["fileToUpload"]["tmp_name"]);
 
-					$build = Main::buildImages($data);
+					$build = \Main::buildImages($data);
 
 					// Отправляем ответ
-					Main::jsonMessage([
+					\Main::jsonMessage([
 						'status' => true,
-						'data' => count($build) > 0 ? $build : Main::loadList()
+//						'data' => count($build) > 0 ? $build : \Main::loadList()
+						'data' => $build
 					]);
 
 				} else {
@@ -38,24 +43,42 @@ try {
 				throw new Exception("Вы ничего не загрузили!");
 			}
 		}
-	} else {
 
-		$result = Main::loadList();
-		if(count($result) > 0){
-			// Отправляем ответ
-			Main::JsonMessage([
-				'status' => true,
-				'data' => Main::loadList()
-			]);
+	} else if($Request === 'GET'){
+
+		if(isset($_GET["list"]) && intval($_GET["list"]) == 1){
+
+			$result = \Main::loadList();
+
+			if(count($result) > 0){
+
+				// Отправляем ответ
+				\Main::JsonMessage([
+					'status' => true,
+					'data' => $result
+				]);
+
+			} else {
+				throw new Exception("Галерея пуста, пожайлуста загрузите файл загрузок!");
+			}
 		}
 
-		throw new Exception("Галерея пуста, пожайлуста загрузите файл загрузок!");
+		if(isset($_GET["lang"]) && is_string($_GET["lang"])){
+			// Отправляем ответ
+			\Main::JsonMessage([
+				'status' => true,
+//				'data' => ((new \Lang\Langs())->getLang(trim($_GET["lang"])))
+				'data' =>\Main::getLangs(trim($_GET["lang"]))
+			], true);
+		}
+
+		throw new Exception("error");
 
 	}
 } catch (Exception $e) {
 
 	// Отправляем ответ
-	Main::jsonMessage([
+	\Main::jsonMessage([
 		'status' => false,
 		'message' => $e->getMessage()
 	]);

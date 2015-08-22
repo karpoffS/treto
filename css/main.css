@@ -1,7 +1,25 @@
-/*body{
-	overflow-y: scroll;
-	overflow-x: hidden;
-}*/
+#header {
+	display: block;
+	min-width: 100%;
+	width: 100%;
+	max-width: 100%;
+	overflow: hidden;
+	background: rgba(255,255,255,1);
+	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(47%, rgba(246,246,246,1)), color-stop(100%, rgba(237,237,237,1)));
+	background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+	background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+	background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+	background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed', GradientType=0 );
+	border-color: #e5e5e5 #eee #eee;
+	border-style: solid;
+	border-width: 1px 0;
+	-webkit-box-shadow: inset 0 3px 6px rgba(0,0,0,.05);
+	box-shadow: inset 0 3px 6px rgba(0,0,0,.05)
+	transition: all 0.3s linear;
+}
+
 
 #upload, #fileToUpload {
 	margin-top: 10px;
@@ -37,3 +55,174 @@
 }
 
 
+.loading1 {
+	height: 100px;
+	position: fixed;
+	width: 80px;
+	z-index: 1000;
+	left: 50%;
+	top: 50%;
+	margin-left: -40px;
+	margin-top: -50px;
+	display: none;
+}
+
+.loading1 > div {
+	background-color:#FFFFFF;
+	height:30px;
+	position:absolute;
+	width:12px;
+
+	/* css3 radius */
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+
+	/* css3 transform - scale */
+	-webkit-transform:scale(0.4);
+	-moz-transform:scale(0.4);
+	-o-transform:scale(0.4);
+
+	/* css3 animation */
+	-webkit-animation-name:loading1;
+	-webkit-animation-duration:1.04s;
+	-webkit-animation-iteration-count:infinite;
+	-webkit-animation-direction:linear;
+	-moz-animation-name:loading1;
+	-moz-animation-duration:1.04s;
+	-moz-animation-iteration-count:infinite;
+	-moz-animation-direction:linear;
+	-o-animation-name:loading1;
+	-o-animation-duration:1.04s;
+	-o-animation-iteration-count:infinite;
+	-o-animation-direction:linear;
+}
+.loading1 > div:nth-child(1) {
+	left:0;
+	top:36px;
+
+	/* css3 transform - rotate */
+	-webkit-transform:rotate(-90deg);
+	-moz-transform:rotate(-90deg);
+	-o-transform:rotate(-90deg);
+
+	/* css3 animation */
+	-webkit-animation-delay:0.39s;
+	-moz-animation-delay:0.39s;
+	-o-animation-delay:0.39s;
+}
+
+.loading1 > div:nth-child(2) {
+	left:10px;
+	top:13px;
+
+	/* css3 transform - rotate */
+	-webkit-transform:rotate(-45deg);
+	-moz-transform:rotate(-45deg);
+	-o-transform:rotate(-45deg);
+
+	/* css3 animation */
+	-webkit-animation-delay:0.52s;
+	-moz-animation-delay:0.52s;
+	-o-animation-delay:0.52s;
+}
+
+.loading1 > div:nth-child(3) {
+	left:34px;
+	top:4px;
+
+	/* css3 transform - rotate */
+	-webkit-transform:rotate(0deg);
+	-moz-transform:rotate(0deg);
+	-o-transform:rotate(0deg);
+
+	/* css3 animation */
+	-webkit-animation-delay:0.65s;
+	-moz-animation-delay:0.65s;
+	-o-animation-delay:0.65s;
+}
+
+.loading1 > div:nth-child(4) {
+	right:10px;
+	top:13px;
+
+	/* css3 transform - rotate */
+	-webkit-transform:rotate(45deg);
+	-moz-transform:rotate(45deg);
+	-o-transform:rotate(45deg);
+
+	/* css3 animation */
+	-webkit-animation-delay:0.78s;
+	-moz-animation-delay:0.78s;
+	-o-animation-delay:0.78s;
+}
+.loading1 > div:nth-child(5) {
+	right:0;
+	top:36px;
+
+	/* css3 transform - rotate */
+	-webkit-transform:rotate(90deg);
+	-moz-transform:rotate(90deg);
+	-o-transform:rotate(90deg);
+
+	/* css3 animation */
+	-webkit-animation-delay:0.91s;
+	-moz-animation-delay:0.91s;
+	-o-animation-delay:0.91s;
+}
+.loading1 > div:nth-child(6) {
+	right:10px;
+	bottom:9px;
+
+	/* css3 transform - rotate */
+	-webkit-transform:rotate(135deg);
+	-moz-transform:rotate(135deg);
+	-o-transform:rotate(135deg);
+
+	/* css3 animation */
+	-webkit-animation-delay:1.04s;
+	-moz-animation-delay:1.04s;
+	-o-animation-delay:1.04s;
+}
+.loading1 > div:nth-child(7) {
+	bottom:0;
+	left:34px;
+
+	/* css3 transform - rotate */
+	-webkit-transform:rotate(180deg);
+	-moz-transform:rotate(180deg);
+	-o-transform:rotate(180deg);
+
+	/* css3 animation */
+	-webkit-animation-delay:1.17s;
+	-moz-animation-delay:1.17s;
+	-o-animation-delay:1.17s;
+}
+.loading1 > div:nth-child(8) {
+	left:10px;
+	bottom:9px;
+
+	/* css3 transform - rotate */
+	-webkit-transform:rotate(-135deg);
+	-moz-transform:rotate(-135deg);
+	-o-transform:rotate(-135deg);
+
+	/* css3 animation */
+	-webkit-animation-delay:1.3s;
+	-moz-animation-delay:1.3s;
+	-o-animation-delay:1.3s;
+}
+
+/* css3 keyframes - loading1 */
+@-webkit-keyframes loading1 {
+	0%{ background-color:#000000 }
+	100%{ background-color:#FFFFFF }
+}
+@-moz-keyframes loading1 {
+	0%{ background-color:#000000 }
+	100%{ background-color:#FFFFFF }
+}
+@-o-keyframes loading1 {
+	0%{ background-color:#000000 }
+	100%{ background-color:#FFFFFF }
+}

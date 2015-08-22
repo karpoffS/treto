@@ -29,9 +29,10 @@ var Messages = (function(){
 
 		opt.container = opt.container || "#messages";
 
+
 		opt.callBackArgs = opt.callBackArgs || false;
 
-		opt.callBack = opt.callback || function(){return;};
+		opt.callback = opt.callback || function(){};
 
 		opt.defaultString = opt.defaultString || "Default message string";
 

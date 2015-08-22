@@ -1,18 +1,13 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: sergey
- * Date: 17.08.15
- * Time: 10:55
+ * User: Karpov Sergey
  */
 
-namespace Main;
+namespace Database;
 
 
-use Exception;
-use mysqli;
-
-class DB
+class MySQL_Client
 {
 	/**
 	 * Настройки подключения

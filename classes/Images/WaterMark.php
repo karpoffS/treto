@@ -4,6 +4,7 @@
  * User: Karpov Sergey
  */
 
+namespace Images;
 
 /**
  * Class WaterMark
@@ -370,7 +371,8 @@ class WaterMark
 	public function destroy($res = 'im') {
 		if($this->{$res} !== null ){
 			$this->type_{$res} = 0;
-			imagedestroy($this->{$res});
+//			imagedestroy($this->{$res});
+			$this->{$res} = null;
 		}
 	}
 

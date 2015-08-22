@@ -9,17 +9,54 @@
  */
 class Main
 {
+
+	/**
+	 * Объект базы данных
+	 * @var object
+	 */
+	private static $objectDatabase;
+
 	/**
 	 * Путь сохранения готовой продукции
 	 * @var string
 	 */
-	private static $savePath = "";
+	private static $savePath = "../images/";
 
 	/**
 	 * Путь загруженых оригиналов
 	 * @var string
 	 */
-	private static $uploadPath = "";
+	private static $uploadPath = "../uploads/";
+
+	/**
+	 * Объект класса Langs
+	 * @var object
+	 */
+	private static $objectLangs;
+
+	/**
+	 * Путь к папке языков
+	 * @var string
+	 */
+	private static $langPath = "../languages/";
+
+	/**
+	 * Получить путь к языкам
+	 * @return string
+	 */
+	public static function getLangPath()
+	{
+		return self::$langPath;
+	}
+
+	/**
+	 * Установка пути к языкам
+	 * @param string $langPath
+	 */
+	public static function setLangPath($langPath)
+	{
+		self::$langPath = $langPath;
+	}
 
 
 	/**
@@ -149,12 +186,12 @@ class Main
 			'h'=> 200 // manual size px
 		];
 
-		$wm = new WaterMark();
+		$wm = new \Images\WaterMark();
 		$wm->loadStamp('watermark/watermark.png');
 
 		$cnt = 1;
 		foreach($array as $name){
-			$hash = md5($name);
+			//$hash = md5($name);
 			$wm->loadImage(self::getUploadPath().$name);
 			$wm->resizeToHeight($resize['h']);
 
@@ -165,11 +202,11 @@ class Main
 			}
 
 			// Формируем массив для сохранения в бд
-			$result[$cnt] = [
+			$result[] = [
 				'name' => $name,
 				'width' => $wm->getWidth(),
 				'height' => $wm->getHeight(),
-				'hash' => $hash,
+				//'hash' => $hash,
 			];
 			$cnt++;
 			$wm->save(self::getSavePath().$name);
@@ -195,12 +232,11 @@ class Main
 	public static function loadList(){
 		$result = [];
 		foreach (glob(self::getSavePath()."/*.{jpg,gif,png}", GLOB_BRACE) as $filename) {
-			list($width, $height, $type, $attr) = getimagesize($filename);
+			list($width, $height) = getimagesize($filename);
 			$result[] = [
 				'name' => basename($filename),
 				'width' => $width,
-				'height' => $height,
-				'attr' => $attr,
+				'height' => $height
 			];
 		}
 		return $result;
@@ -211,13 +247,44 @@ class Main
 	 * @param array $array
 	 * @throws Exception
 	 */
-	public static function jsonMessage($array = []){
+	public static function jsonMessage($array = [], $plaine = false){
 
 		if(!is_array($array) && count($array) == 0)
 			throw new Exception("Нет данных для отправки");
 
-		header('Content-Type: application/json');
-		die(json_encode($array));
+		header('Content-Type: application/json; charset=utf-8');
+
+		if($plaine){
+			die(json_encode($array, JSON_UNESCAPED_UNICODE));
+		} else {
+			die(json_encode($array));
+		}
+
 	}
 
+	/**
+	 * Функция загрузки языков
+	 *
+	 * @return object
+	 * @throws Exception
+	 * @internal param string $section
+	 * @internal param string $lang
+	 */
+	public static function getLangs($section, $key = null, $lang = null){
+
+		if(self::$objectLangs === null){
+			self::$objectLangs = new \Lang\Langs();
+		}
+
+		return self::$objectLangs->getLang($section, $key, $lang);
+	}
+
+	public static function DB()
+	{
+		if(self::$objectDatabase === null){
+			self::$objectDatabase = new \Database\MySQL_Client();
+		}
+
+		return self::$objectDatabase;
+	}
 }

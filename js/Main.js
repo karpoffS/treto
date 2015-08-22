@@ -12,6 +12,12 @@
 var total_data_gallery = [];
 
 /**
+ * Обект хранящий языковые ключи
+ * @type {Object}
+ */
+var Languages = {};
+
+/**
  * Основной модуль приложения
  * @type {{loadList: Function, SubmitForm: Function, handlerAjax: Function, appendToArray: Function}}
  */
@@ -21,10 +27,11 @@ var Main = {
 	 */
 	loadList: function(){
 		$.ajax({
-			url: "/backend.php", type: "GET",
-			dataType: "json", processData: false,
-			contentType: false
-		}).done(function( data ) {
+			url: "/backend.php",
+			type: "GET",
+			dataType: "json",
+			data: {list:1}
+		}).done(function(data){
 			Main.handlerAjax(data);
 		});
 	},
@@ -55,8 +62,22 @@ var Main = {
 	 * @returns {boolean}
 	 */
 	handlerAjax: function(result){
+
+		// Инициализируем модуль сообщений
+		Messages.init({
+			container: "#message",
+			delay: 2000,
+			fadeOut: 1000,
+			defaultString: Main.getLang("system", "LoadFileLinks" ),
+			callBackArgs: true,
+			callback: function(array){
+				Main.appendToArray(array);
+				return true;
+			}
+		});
+
 		if(result.status){
-			Messages.message("Идёт загрузка данных...", "text-info", result.data);
+			Messages.message(this.getLang("system", "LoadMessage"), "text-info", result.data);
 		} else {
 			Messages.message(result.message, "text-danger");
 		}
@@ -80,5 +101,59 @@ var Main = {
 
 		// Запускаем галлерею
 		Gallery.add(total_data_gallery);
+	},
+
+	/**
+	 * Метод возвращает строку
+	 * @param obj
+	 * @returns {string}
+	 */
+	getLang: function (section, key) {
+
+		if (arguments.length < 2) {
+			throw new Error("This method call is " + arguments.length
+				+ " arg, needed 2 args. section, key");
+		}
+
+		if(Languages.hasOwnProperty(section)){
+			if(Languages[section].hasOwnProperty(key)){
+				return Languages[section][key];
+			}else {
+				throw new Error("Key not found!");
+			}
+		} else {
+			//throw new Error("Section not found!");
+			//Main.loadLang(section);
+			//return Languages[section][key];
+		}
+	},
+
+	/**
+	 * Загружает язык с сервера
+	 * @param item
+	 */
+	loadLang: function(section){
+
+		$.ajax({
+			url: "/backend.php",
+			type: "GET",
+			dataType: "json",
+			async: false,
+			data: {lang: section}
+		}).done(function(result){
+
+			// Добавляем ленги на сайт
+			for(var item in result.data){
+				Languages[item] = result.data[item];
+			}
+		});
+
+		return;
 	}
 };
+
+$(document).bind("ajaxSend", function(){
+	$("#loading").show();
+}).bind("ajaxComplete", function(){
+	$("#loading").hide();
+});

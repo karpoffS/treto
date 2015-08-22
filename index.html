@@ -28,26 +28,32 @@
 	<link rel="stylesheet" type="text/css" href="css/main.css?v=1">
 </head>
 <body>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12" style="text-align: center;">
-				<form class="form-inline" action="backend.php" method="post" enctype="multipart/form-data" id="uploadform" onsubmit="return Main.SubmitForm();">
-					<div class="form-group" id="fileToUpload">
-						<input type="file" class="form-control" name="fileToUpload">
-					</div>
-					<button type="submit" id="upload" value="Загрузить" name="upload" class="btn btn-success">Загрузить</button>
-				</form>
-			</div>
+	<!-- Header -->
+	<div id="header">
+		<div style="text-align: center;">
+			<form class="form-inline" action="backend.php" method="post" enctype="multipart/form-data" id="uploadform" onsubmit="return Main.SubmitForm();">
+				<div class="form-group" id="fileToUpload">
+					<input type="file" class="form-control" name="fileToUpload">
+				</div>
+				<button type="submit" id="upload" value="Загрузить" name="upload" class="btn btn-success">Загрузить</button>
+			</form>
 		</div>
-		<div class="row">
-			<div class="col-md-12" style="text-align: center;">
-				<p class="text-muted" id="message">Загрузите файл содержащий ссылки</p>
-			</div>
+		<div style="text-align: center;">
+			<p class="text-muted" id="message">Загрузите файл содержащий ссылки</p>
 		</div>
 	</div>
 
+	<div id="loading" class="loading1">
+		<div></div><div></div>
+		<div></div><div></div>
+		<div></div><div></div>
+		<div></div><div></div>
+	</div>
+
 	<!-- gallery container -->
-	<div id="gallery"></div>
+	<div id="gallery">
+
+	</div>
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -57,19 +63,21 @@
 
 	<!-- Core application -->
 	<script src="js/Main.js?v=1" type="text/javascript"></script>
+
+	<!-- Основкная инициализация скриптов -->
 	<script type="text/javascript">
 		$(document).ready(function(){
 
-			// Инициализируем модуль сообщений
-			Messages.init({
-				container: "#message",
-				delay: 2000,
-				fadeOut: 1000,
-				defaultString: "Загрузите файл содержащий ссылки",
-				callBackArgs: true,
-				callback: function(array){
-					Main.appendToArray(array);
-					return true;
+			// Загружаем список языков по ajax
+			Main.loadLang("system");
+
+			// Липкая панель
+			var HeaderTop = $('#header').offset().top;
+			$(window).scroll(function(){
+				if( $(window).scrollTop() > HeaderTop ) {
+					$('#header').css({position: 'fixed', top: '0px', zIndex: 1});
+				} else {
+					$('#header').css({position: 'relative', zIndex: 1});
 				}
 			});
 
