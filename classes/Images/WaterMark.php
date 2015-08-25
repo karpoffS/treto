@@ -60,7 +60,6 @@ class WaterMark
 	 */
 	private $allow_types = [
 		'jpg' => IMAGETYPE_JPEG,
-		'jpeg' => IMAGETYPE_JPEG,
 		'png' => IMAGETYPE_PNG,
 		'gif' => IMAGETYPE_GIF,
 	];
@@ -105,8 +104,7 @@ class WaterMark
 	 * @param int $permissions
 	 * @throws Exception
 	 */
-	public function setPermissions($permissions = 0655)
-	{
+	public function setPermissions($permissions = 0655) {
 		if(is_int($permissions)){
 			$this->permissions = $permissions;
 		} else{
@@ -288,6 +286,7 @@ class WaterMark
 	 * @throws Exception
 	 */
 	public function output($type = 'jpg') {
+
 		if(in_array($type, $this->allow_types)){
 
 			if( $this->allow_types[$type] == IMAGETYPE_JPEG ) {
@@ -320,7 +319,7 @@ class WaterMark
 	 * Добавление водяного знака текстом
 	 * @throws Exception
 	 */
-	public function addText()	{
+	public function addText() {
 
 		// First we create our stamp image manually from GD
 		$stamp = imagecreatetruecolor(100, 70);
@@ -344,7 +343,11 @@ class WaterMark
 	/**
 	 * Добавление водяного знака из изображения
 	 */
-	public function addStamp()	{
+	public function addStamp() {
+
+		if($this->type_im !== $this->type_st){
+			$this->im = $this->toVar($this->getType($this->type_st));
+		}
 
 		// Если водяной знак не вмещяется в картинку, то уменьшаем его
 		if($this->getWidth('st') > $this->getWidth())
@@ -363,6 +366,18 @@ class WaterMark
 			0, 0,
 			$this->getWidth('st'), $this->getHeight('st')
 		);
+	}
+
+	/**
+	 * Возвращает тип искомого элемента
+	 * @param $type
+	 * @return int|string
+	 */
+	private function getType($type) {
+		foreach ($this->allow_types as $key => $value) {
+			if($value === $type)
+				return $key;
+		}
 	}
 
 	/**

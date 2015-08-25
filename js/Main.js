@@ -112,7 +112,7 @@ var Main = {
 
 		if (arguments.length < 2) {
 			throw new Error("This method call is " + arguments.length
-				+ " arg, needed 2 args. section, key");
+				+ " arg, needed 2 args. section and key");
 		}
 
 		if(Languages.hasOwnProperty(section)){
@@ -122,9 +122,7 @@ var Main = {
 				throw new Error("Key not found!");
 			}
 		} else {
-			//throw new Error("Section not found!");
-			//Main.loadLang(section);
-			//return Languages[section][key];
+			throw new Error("Section not found!");
 		}
 	},
 
@@ -142,7 +140,7 @@ var Main = {
 			data: {lang: section}
 		}).done(function(result){
 
-			// Добавляем ленги на сайт
+			// Добавляем ленги
 			for(var item in result.data){
 				Languages[item] = result.data[item];
 			}
@@ -152,8 +150,3 @@ var Main = {
 	}
 };
 
-$(document).bind("ajaxSend", function(){
-	$("#loading").show();
-}).bind("ajaxComplete", function(){
-	$("#loading").hide();
-});

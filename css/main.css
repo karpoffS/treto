@@ -47,6 +47,7 @@
 	position:relative;
 	overflow:hidden;
 	transition: all 0.25s ease-out;
+	background-color: brown;
 }
 
 #gallery > .item > img{
@@ -55,7 +56,7 @@
 }
 
 
-.loading1 {
+.css3-loader {
 	height: 100px;
 	position: fixed;
 	width: 80px;
@@ -67,7 +68,7 @@
 	display: none;
 }
 
-.loading1 > div {
+.css3-loader > div {
 	background-color:#FFFFFF;
 	height:30px;
 	position:absolute;
@@ -97,7 +98,7 @@
 	-o-animation-iteration-count:infinite;
 	-o-animation-direction:linear;
 }
-.loading1 > div:nth-child(1) {
+.css3-loader > div:nth-child(1) {
 	left:0;
 	top:36px;
 
@@ -112,7 +113,7 @@
 	-o-animation-delay:0.39s;
 }
 
-.loading1 > div:nth-child(2) {
+.css3-loader > div:nth-child(2) {
 	left:10px;
 	top:13px;
 
@@ -127,7 +128,7 @@
 	-o-animation-delay:0.52s;
 }
 
-.loading1 > div:nth-child(3) {
+.css3-loader > div:nth-child(3) {
 	left:34px;
 	top:4px;
 
@@ -142,7 +143,7 @@
 	-o-animation-delay:0.65s;
 }
 
-.loading1 > div:nth-child(4) {
+.css3-loader > div:nth-child(4) {
 	right:10px;
 	top:13px;
 
@@ -156,7 +157,7 @@
 	-moz-animation-delay:0.78s;
 	-o-animation-delay:0.78s;
 }
-.loading1 > div:nth-child(5) {
+.css3-loader > div:nth-child(5) {
 	right:0;
 	top:36px;
 
@@ -170,7 +171,7 @@
 	-moz-animation-delay:0.91s;
 	-o-animation-delay:0.91s;
 }
-.loading1 > div:nth-child(6) {
+.css3-loader > div:nth-child(6) {
 	right:10px;
 	bottom:9px;
 
@@ -184,7 +185,7 @@
 	-moz-animation-delay:1.04s;
 	-o-animation-delay:1.04s;
 }
-.loading1 > div:nth-child(7) {
+.css3-loader > div:nth-child(7) {
 	bottom:0;
 	left:34px;
 
@@ -198,7 +199,7 @@
 	-moz-animation-delay:1.17s;
 	-o-animation-delay:1.17s;
 }
-.loading1 > div:nth-child(8) {
+.css3-loader > div:nth-child(8) {
 	left:10px;
 	bottom:9px;
 

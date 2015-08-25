@@ -29,7 +29,6 @@ var Messages = (function(){
 
 		opt.container = opt.container || "#messages";
 
-
 		opt.callBackArgs = opt.callBackArgs || false;
 
 		opt.callback = opt.callback || function(){};

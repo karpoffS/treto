@@ -7,7 +7,8 @@
  * Галлерея Стена как у Гуугла и Яндекса
  * @type {{run, resize}}
  */
-var Gallery = (function(){
+var Gallery;
+Gallery = function () {
 
 	"use strict";
 
@@ -22,6 +23,12 @@ var Gallery = (function(){
 	 * @type {string}
 	 */
 	var id_item = "gallery_item_";
+
+	/**
+	 * Шаблон для вставки
+	 * @type {string}
+	 */
+	var tpl = '<div id="{id}" class="item" style="margin: {margin}px; width: {width}px; height: {height}px;"> <img src="{url}" style=" width: {width}px; height: {height}px;" {onLoad}></div>';
 
 	/**
 	 * Масив с данными
@@ -57,7 +64,7 @@ var Gallery = (function(){
 	 * Метод проверки и установки конфигурации
 	 * @param opt
 	 */
-	function setConfig(opt){
+	function setOptions(opt) {
 
 		opt.margin = opt.margin || 0;
 
@@ -68,7 +75,7 @@ var Gallery = (function(){
 
 		options = opt;
 
-		return;
+		return true;
 	}
 
 	/**
@@ -76,13 +83,35 @@ var Gallery = (function(){
 	 * @param data
 	 * @returns {boolean}
 	 */
-	function checkUpdate(data){
-		if(data.length != lastArrayCount){
+	function checkUpdate(data) {
+		if (data.length != lastArrayCount) {
 			lastArrayCount = data.length;
 			return true;
 		}
 
 		return false;
+	}
+
+	/**
+	 * Возвращает имя контейнера
+	 * @returns {options.container}
+	 */
+	function getContainer() {
+
+		/** @namespace options.container */
+		return options.container;
+	}
+
+	/**
+	 * Шаблонизатор
+	 * @param template
+	 * @param data
+	 * @returns {void|XML|string}
+	 */
+	function templateParser(template, data) {
+		return template.replace(/\{(\w*)\}/g, function (m, key) {
+			return data.hasOwnProperty(key) ? data[key] : "";
+		});
 	}
 
 	/**
@@ -94,13 +123,14 @@ var Gallery = (function(){
 		nowLineWidth = 0;
 
 		// Узнаём ширину контейнера
-		containerWidth = $(options.container).width();
+		containerWidth = $(getContainer()).width();
 
 		// Перебираем массив
-		for (var i in imgSrc) {
+		var i, len = imgSrc.length;
+		for (i = 0; i < len; i++) {
 
 			// Набиваем массив кол-вом елементов в строке
-			elements.push(id_item+i);
+			elements.push(id_item + i);
 
 			nowLineWidth += (imgSrc[i]['width'] + options.margin * 2);
 
@@ -109,8 +139,8 @@ var Gallery = (function(){
 				// Узнаём разницу ширины строки
 				var diffWidthRow = (nowLineWidth - containerWidth);
 
-				$(id_item+i).css({
-					width: imgSrc[i]['width']-diffWidthRow+"px"
+				$(id_item + i).css({
+					width: imgSrc[i]['width'] - diffWidthRow + "px"
 				});
 
 				// Устанавливаем ширину строки
@@ -123,6 +153,11 @@ var Gallery = (function(){
 				elements = [];
 			} else {
 
+				if ((imgSrc.length - 1) == i && containerWidth > (containerWidth - nowLineWidth)) {
+					// Устанавливаем ширину строки
+					setWidthElementsInRows((containerWidth - nowLineWidth), true);
+
+				}
 			}
 		}
 	}
@@ -131,7 +166,10 @@ var Gallery = (function(){
 	 * Установка ширины элементов в строке
 	 * @param diffWidthRow
 	 */
-	function setWidthElementsInRows(diffWidthRow) {
+	function setWidthElementsInRows(diffWidthRow, direction) {
+
+		// Задаём направление расчётов
+		direction = direction || false;
 
 		//Количество картинок
 		var countImages = elements.length;
@@ -139,26 +177,40 @@ var Gallery = (function(){
 		// По сколько отнимать ширину от каждой картинки
 		var diffToEveryImg = Math.ceil(diffWidthRow / countImages);
 
+		console.log(elements, diffWidthRow, diffToEveryImg);
+
 		// Получаем расчитаный массив ширин
 		var newElements = calculatingWidthInRow(countImages, diffWidthRow, diffToEveryImg);
 
 		// Устанвливаем ширины
-		for (var i in newElements) {
+		var i, len = newElements.length;
+		if(len > 1)
+		for (i = 0; i < len; i++) {
+
 			var elem = $('#' + newElements[i]['id']);
+			var child = elem.children('img');
+
 			var id = newElements[i]['id'].replace(id_item, '');
+
 			var orginalWidth = imgSrc[id]['width'];
 			var calcWidth = newElements[i]['width'];
-			var newWidth = (orginalWidth - calcWidth);
+
+			// Изменяем расчёты
+			if(direction){
+				var newWidth = (orginalWidth + calcWidth);
+				var elemObj = { 'width': newWidth + 'px'};
+				var childObj = { marginLeft: "0px", 'width': newWidth + 'px'};
+			}else{
+				var newWidth = (orginalWidth - calcWidth);
+				var elemObj = { 'width': newWidth + 'px'};
+				var childObj = { marginLeft: -Math.abs(Math.ceil(calcWidth)) + "px"};
+			}
 
 			// Устанвливаем ширину
-			elem.css({
-				'width': newWidth + 'px'
-			});
+			elem.css(elemObj);
 
 			// Отодвигаем влево если это небходимо
-			elem.children('img').css({
-				marginLeft: -Math.abs(Math.ceil( calcWidth ))+"px"
-			});
+			child.css(childObj);
 		}
 	}
 
@@ -177,8 +229,8 @@ var Gallery = (function(){
 		var newElements = [];
 
 		// Расчитываем строку
-		for (var i in elements) {
-
+		var i, len = elements.length;
+		for (i = 0; i < len; i++) {
 			// Набиваем массив
 			newElements.push({
 				'id': elements[i],
@@ -196,18 +248,16 @@ var Gallery = (function(){
 	return {
 
 		/**
-		 * Инициализация
-		 * @param c
+		 * Инициализация настроек
+		 * @param opt
 		 */
-		init: function (c) {
-			// Утанавливаем настройки
-			setConfig(c);
-
-			return;
+		init: function (opt) {
+			// Устанавливаем настройки
+			return setOptions(opt);
 		},
 
 		/**
-		 * Метод запуска
+		 * Метод запуска галереи
 		 * @param array
 		 */
 		add: function (array) {
@@ -216,31 +266,31 @@ var Gallery = (function(){
 			imgSrc = array ? array : [];
 
 			// Проверяем на существоквание данных
-			if (
-				(imgSrc.length > 0 &&
-				$(options.container+' > div').length === 0)
-				|| checkUpdate(imgSrc)
-			) {
+			if (imgSrc.length > 0 && $(options.container + ' > div').length === 0) {
 
-				$(options.container).html('');
+				if (!checkUpdate(imgSrc))
+					$(getContainer()).html('');
+
 				var str = '';
-				var strLoad = 'onLoad="Gallery.start()"';
 
-				for (var i in imgSrc) {
-
-					str += '<div id="'+id_item+i + '" class="item" ' +
-						'style="margin:'+options.margin+'px; width: ' + imgSrc[i]['width'] +
-						'px; height: ' + imgSrc[i]['height'] + 'px;">' +
-						'<img src="images/' + imgSrc[i]['name'] + '" ' +
-						'style="width: ' + imgSrc[i]['width'] + 'px; ' +
-						'height: ' + imgSrc[i]['height'] + 'px;" '+
-						((imgSrc.length-1) == i ? strLoad : '')+'></div>';
+				var i, len = imgSrc.length;
+				for (i = 0; i < len; i++) {
+					str += templateParser(tpl, {
+						id: id_item + i,
+						margin: options.margin,
+						width: imgSrc[i]['width'],
+						height: imgSrc[i]['height'],
+						url: 'images/' + imgSrc[i]['name'],
+						onLoad: ((imgSrc.length - 1) == i ? 'onLoad="return Gallery.start();"' : '')
+					});
 				}
-				$(options.container).append(str);
+
+				$(getContainer()).append(str);
 			}
 
-			if(options.debug){
-				console.log("Waiting loading "+imgSrc.length+" items in gallery...");
+			/** @namespace options.debug */
+			if (options.debug) {
+				console.log("Waiting loading " + this.getTotalElements() + " items in gallery...");
 			}
 
 			return;
@@ -251,7 +301,7 @@ var Gallery = (function(){
 		 * @returns {Number}
 		 */
 		getTotalElements: function () {
-			return imgSrc.length ;
+			return imgSrc.length;
 		},
 
 		/**
@@ -260,7 +310,8 @@ var Gallery = (function(){
 		start: function () {
 			startGallery();
 
-			if(options.debug) {
+			/** @namespace options.debug */
+			if (options.debug) {
 				console.log("Gallery starting...");
 			}
 			return true;
@@ -271,11 +322,11 @@ var Gallery = (function(){
 		 */
 		resize: function () {
 			// Если ширина изменилась то запускаем перерасчёт
-			if ($(options.container).width() !== containerWidth) {
+			if ($(getContainer()).width() !== containerWidth) {
 				startGallery();
 			}
 
 			return;
 		}
 	};
-}());
+}();

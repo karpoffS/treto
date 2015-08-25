@@ -17,6 +17,9 @@ class Detector
 	var $language = null;
 
 
+	/**
+	 * Detector constructor.
+	 */
 	public function __construct()
 	{
 		if ($list = strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
@@ -29,10 +32,15 @@ class Detector
 		} else $this->language = array();
 	}
 
-	public function getBrowserPriorityLang($default, $langs)
+	/**
+	 * @param string $default
+	 * @param array  $array
+	 * @return string
+	 */
+	public function getBrowserPriorityLang($default = 'en', $array = [])
 	{
 		$languages=array();
-		foreach ($langs as $lang => $alias) {
+		foreach ($array as $lang => $alias) {
 			if (is_array($alias)) {
 				foreach ($alias as $alias_lang) {
 					$languages[strtolower($alias_lang)] = strtolower($lang);
